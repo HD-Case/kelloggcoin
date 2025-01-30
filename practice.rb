@@ -27,3 +27,39 @@ blockchain = [
 # Anthony's KelloggCoin balance is 2650
 
 # 👇👇👇 Your code HERE 👇👇👇
+unique_names = []
+
+'''blockchain.each do |transfer|
+  puts transfer["to_user"]
+end'''
+
+blockchain.each do |transfer|
+  ["from_user", "to_user"].each do |key|
+    if transfer[key] && !transfer[key].empty? && !unique_names.include?(transfer[key])
+      unique_names << transfer[key]
+    end
+  end
+end
+
+wallets = {} #track each user's wallet
+
+unique_names.each do |name|
+  wallets[name] = 0  # Set each user's wallet balance to 0
+end
+
+blockchain.each do |transfer|
+  from_user = transfer["from_user"]
+  to_user = transfer["to_user"]
+  amount = transfer["amount"]
+
+  if from_user && !from_user.empty?
+    wallets[from_user] -= amount
+  end
+
+  wallets[to_user] += amount
+
+end
+
+wallets.each do |name, balance|
+  puts "#{name}'s KelloggCoin balance is #{balance}"
+end
